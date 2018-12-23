@@ -15,11 +15,11 @@ fun solvePart1(input: List<Int>) = input.fold(0) { freq, delta -> freq + delta }
 fun solvePart2(input: List<Int>): Int {
 
     val repeat = Repeat(input)
-    val history = mutableMapOf<Int,Int>()
+    val history = mutableSetOf<Int>()
     var freq = repeat.next()
 
     while (!history.contains(freq)) {
-        history[freq] = freq
+        history.add(freq)
         freq += repeat.next()
     }
 
@@ -32,10 +32,7 @@ class Repeat<T>(private val items: List<T>) {
 
     fun next(): T {
         val value = items[index]
-        index += 1
-        if (index == items.size) {
-            index = 0
-        }
+        index = (index + 1) % items.size
         return value
     }
 }
