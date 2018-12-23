@@ -14,7 +14,7 @@ fun solvePart1(input: List<Int>) = input.fold(0) { freq, delta -> freq + delta }
 
 fun solvePart2(input: List<Int>): Int {
 
-    val repeat = Repeat(input)
+    val repeat = CircularIterator(input)
     val history = mutableSetOf<Int>()
     var freq = repeat.next()
 
@@ -26,7 +26,7 @@ fun solvePart2(input: List<Int>): Int {
     return freq
 }
 
-class Repeat<T>(private val items: List<T>) {
+class CircularIterator<T>(private val items: List<T>) {
 
     private var index = 0
 

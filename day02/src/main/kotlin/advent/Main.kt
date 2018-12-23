@@ -15,8 +15,10 @@ fun solvePart1(input: List<String>): Int {
 
     val pair = input.fold(0 to 0) { acc, str ->
 
-        val hasTwo = hasExactlyCountOfAnyLetter(str, 2)
-        val hasThree = hasExactlyCountOfAnyLetter(str, 3)
+        val values = str.groupBy { it }.values
+
+        val hasTwo = values.any { it.size == 2 }
+        val hasThree = values.any { it.size == 3 }
 
         val first = acc.first + if (hasTwo) 1 else 0
         val second = acc.second + if (hasThree) 1 else 0
@@ -30,7 +32,11 @@ fun solvePart1(input: List<String>): Int {
 fun solvePart2(input: List<String>): String {
     input.forEach { first ->
         input.filter { it != first }.forEach { second ->
-            val commonLetters = commonLetters(first, second)
+
+            val commonLetters = first.zip(second).fold("") { acc, pair ->
+                acc + if (pair.first == pair.second) pair.first else ""
+            }
+
             if (commonLetters.length == first.length - 1) {
                 return commonLetters
             }
@@ -38,11 +44,3 @@ fun solvePart2(input: List<String>): String {
     }
     throw IllegalStateException("did not find solution")
 }
-
-fun hasExactlyCountOfAnyLetter(input: String, count: Int) =
-    input.groupBy { it }.values.any { it.size == count }
-
-fun commonLetters(first: String, second: String) =
-    first.zip(second).fold("") { acc, pair ->
-        acc + if (pair.first == pair.second) pair.first else ""
-    }
