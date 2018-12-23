@@ -18,8 +18,8 @@ fun solvePart1(input: List<String>): Int {
         val hasTwo = hasExactlyCountOfAnyLetter(str, 2)
         val hasThree = hasExactlyCountOfAnyLetter(str, 3)
 
-        val first = if (hasTwo) acc.first + 1 else acc.first
-        val second = if (hasThree) acc.second + 1 else acc.second
+        val first = acc.first + if (hasTwo) 1 else 0
+        val second = acc.second + if (hasThree) 1 else 0
 
         first to second
     }
@@ -44,5 +44,5 @@ fun hasExactlyCountOfAnyLetter(input: String, count: Int) =
 
 fun commonLetters(first: String, second: String) =
     first.zip(second).fold("") { acc, pair ->
-        if (pair.first == pair.second) acc + pair.first else acc
+        acc + if (pair.first == pair.second) pair.first else ""
     }
