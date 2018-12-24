@@ -11,29 +11,16 @@ fun main(args:Array<String>) {
     println(solvePart2(input))
 }
 
-fun solvePart1(polymer: String) = react(polymer)
+fun solvePart1(polymer: String) = polymer.react()
 
-fun solvePart2(polymer: String): Int {
-
-    var solution = Int.MAX_VALUE
-
-    val allChars = polymer.map { it.toLowerCase() }.distinct()
-
-    allChars.forEach { c ->
-        polymer.filterNot { it.toLowerCase() == c }.run {
-            solution = min(solution, react(this))
+fun solvePart2(polymer: String) =
+        ('a'..'z').fold(Int.MAX_VALUE) { acc, c ->
+            min(acc, polymer.filterNot { it.toLowerCase() == c }.react())
         }
-    }
 
-    return solution
-}
-
-fun react(polymer: String): Int {
-
-    val p = StringBuffer(polymer)
-
+fun String.react(): Int {
+    val p = StringBuilder(this)
     var i = 0
-
     while (i < p.length-1) {
         val (x, y) = p[i] to p[i+1]
         if (x != y && x.toUpperCase() == y.toUpperCase()) {
@@ -43,6 +30,5 @@ fun react(polymer: String): Int {
             i++
         }
     }
-
     return p.length
 }
